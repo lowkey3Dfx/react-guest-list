@@ -1,14 +1,30 @@
+import './index.css';
+import { css, Global } from '@emotion/react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <Global
+      styles={css`
+        body {
+          box-sizing: border-box;
+          margin: 0;
+
+        *,
+        ::before,
+        ::after {
+          margin: 0;
+          box-sizing: border-box;
+          font-family: sans-serif;
+        }
+      `}
+    />
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
