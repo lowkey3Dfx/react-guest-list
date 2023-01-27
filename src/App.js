@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import React, { useState } from 'react';
 
 const wrapperDivStyled = css`
   display: flex;
@@ -7,7 +8,7 @@ const wrapperDivStyled = css`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: #fafafa;
+  background-color: whiite;
 `;
 
 const divOneStyled = css`
@@ -69,6 +70,11 @@ const divFiveStyled = css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
 `;
 
 const divSixStyled = css`
@@ -79,6 +85,9 @@ const divSixStyled = css`
 `;
 
 function App() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+
   return (
     <div className="App">
       <div css={wrapperDivStyled}>
@@ -87,11 +96,20 @@ function App() {
             <h1>Guest List</h1>
             <div css={divThreeStyled}>
               <label>First Name</label>
-              <input placeholder="First Name" />
+              <input
+                placeholder="First Name"
+                value={firstName}
+                onChange={(event) => setFirstName(event.currentTarget.value)}
+              />
             </div>
             <div css={divThreeStyled}>
               <label>Last Name</label>
-              <input placeholder="Last Name" />
+              <input
+                placeholder="Last Name"
+                value={lastName}
+                value={lastName}
+                onChange={(event) => setLastName(event.currentTarget.value)}
+              />
             </div>
 
             <div css={divFourStyled}>
@@ -100,10 +118,12 @@ function App() {
               </button>
             </div>
           </div>
-          <div css={divThreeStyled}>
-            <h2>Name List</h2>
-            <div css={divSixStyled}>
-              <input />
+          <div css={divTwoStyled}>
+            <div css={divFiveStyled}>
+              <h2>Name List</h2>
+              <div css={divSixStyled}>
+                <input value={firstName + ' ' + lastName} />
+              </div>
             </div>
           </div>
         </div>
