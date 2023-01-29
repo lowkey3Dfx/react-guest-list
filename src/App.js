@@ -8,7 +8,7 @@ const wrapperDivStyled = css`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: whiite;
+  background-color: white;
 `;
 
 const divOneStyled = css`
@@ -78,15 +78,39 @@ const divFiveStyled = css`
 `;
 
 const divSixStyled = css`
+  display: flex;
+
   input {
-    width: 200px;
+    width: 180px;
     height: 24px;
   }
 `;
 
 function App() {
+  // 1. create state variable
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [isChecked, setIsChecked] = useState(true);
+  const [createGuest, setCreateGuest] = useState('');
+
+  function createGuestName() {
+    return (
+      <div css={divTwoStyled}>
+        <div css={divFiveStyled}>
+          <h2>Name List</h2>
+          <div css={divSixStyled}>
+            {firstName + ' ' + lastName}
+            is {isChecked ? '' : 'not'} attending
+            <input
+              type="checkbox"
+              checked={isChecked}
+              onChange={(event) => setIsChecked(event.currentTarget.checked)}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="App">
@@ -107,8 +131,8 @@ function App() {
               <input
                 placeholder="Last Name"
                 value={lastName}
-                value={lastName}
                 onChange={(event) => setLastName(event.currentTarget.value)}
+                onSubmit={createGuestName()}
               />
             </div>
 
@@ -118,14 +142,8 @@ function App() {
               </button>
             </div>
           </div>
-          <div css={divTwoStyled}>
-            <div css={divFiveStyled}>
-              <h2>Name List</h2>
-              <div css={divSixStyled}>
-                <input value={firstName + ' ' + lastName} />
-              </div>
-            </div>
-          </div>
+
+          {createGuest}
         </div>
       </div>
     </div>
