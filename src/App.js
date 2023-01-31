@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 const wrapperDivStyled = css`
   display: flex;
@@ -57,6 +58,7 @@ const divFourStyled = css`
     border-radius: 8px;
     border: transparent;
     margin-top: 16px;
+    cursor: pointer;
 
     span {
       font-size: 16px;
@@ -86,31 +88,26 @@ const divSixStyled = css`
   }
 `;
 
-function App() {
-  // 1. create state variable
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [isChecked, setIsChecked] = useState(true);
-  const [createGuest, setCreateGuest] = useState('');
+const guestList = [];
 
-  function createGuestName() {
-    return (
-      <div css={divTwoStyled}>
-        <div css={divFiveStyled}>
-          <h2>Name List</h2>
-          <div css={divSixStyled}>
-            {firstName + ' ' + lastName}
-            is {isChecked ? '' : 'not'} attending
-            <input
-              type="checkbox"
-              checked={isChecked}
-              onChange={(event) => setIsChecked(event.currentTarget.checked)}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
+function App() {
+  const defaultGuest = {
+    firstName: '',
+    lastName: '',
+    attending: false,
+  };
+  const [guest, setGuest] = useState(defaultGuest);
+
+  const [dataApi, setDataApi] = useState([]);
+  const myUrl = 'http://localhost:4000/guests';
+
+  useEffect(() => {
+    axios(myUrl)
+      .then((res) => setDataApi(res.data))
+      .catch((err) => err);
+  }, []);
+
+  console.log(dataApi);
 
   return (
     <div className="App">
@@ -118,32 +115,51 @@ function App() {
         <div css={divOneStyled}>
           <div data-test-id="guest" css={divTwoStyled}>
             <h1>Guest List</h1>
+            {/* first name div */}
             <div css={divThreeStyled}>
               <label>First Name</label>
               <input
+                value={guest.firstName}
                 placeholder="First Name"
-                value={firstName}
-                onChange={(event) => setFirstName(event.currentTarget.value)}
+                onChange={(event) =>
+                  setGuest({ ...guest, ['firstName']: event.target.value })
+                }
               />
             </div>
+            {/* last name div */}
             <div css={divThreeStyled}>
               <label>Last Name</label>
               <input
+                value={guest.lastName}
                 placeholder="Last Name"
-                value={lastName}
-                onChange={(event) => setLastName(event.currentTarget.value)}
-                onSubmit={createGuestName()}
+                onChange={(event) =>
+                  setGuest({ ...guest, ['lastName']: event.target.value })
+                }
+                // onSubmit={() => guestList.push(guest)}
               />
             </div>
-
             <div css={divFourStyled}>
-              <button>
-                <span>Remove</span>
+              <button
+                onClick={() => {
+                  console.log(guest);
+                  console.log(guestList);
+                  guestList.push(guest);
+                  console.log(guestList);
+                  setGuest(defaultGuest);
+                }}
+              >
+                {console.log(guestList)}
+                <span>Add</span>
               </button>
             </div>
           </div>
-
-          {createGuest}
+          <div>
+            {dataApi.map((item) => (
+              <h2 key={item.id}>
+                {`${item.firstName} ${item.lastName} ${item.attending}`}{' '}
+              </h2>
+            ))}
+          </div>
         </div>
       </div>
     </div>
